@@ -43,7 +43,12 @@ export function createSubmissionCoordinator(dependencies: SubmissionDependencies
     }
 
     if (options.intent === "create-separately") {
-      const embedding = await dependencies.enrichEmbedding(options.draft);
+      let embedding: number[] | null = null;
+      try {
+        embedding = await dependencies.enrichEmbedding(options.draft);
+      } catch {
+        // Enrichment is best-effort and must never block an explicit override.
+      }
       const request = await dependencies.create(options.draft, embedding);
       return { status: "created", id: request.id };
     }

@@ -159,11 +159,12 @@ export function createDuplicateTriageGraph(dependencies: TriageDependencies) {
 export async function runDuplicateTriage(
   graph: ReturnType<typeof createDuplicateTriageGraph>,
   draft: TriageDraft,
+  now: () => number = Date.now,
 ): Promise<TriageResult> {
   try {
     const output = await graph.invoke({
       draft,
-      deadlineAt: Date.now() + AI_TRIAGE_CONFIG.totalTimeoutMs,
+      deadlineAt: now() + AI_TRIAGE_CONFIG.totalTimeoutMs,
     });
     return output.result ?? { status: "unavailable" };
   } catch (error) {

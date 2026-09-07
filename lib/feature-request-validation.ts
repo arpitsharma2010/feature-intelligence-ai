@@ -27,6 +27,25 @@ export type CreateFeatureRequestState = {
   suggestion?: DuplicateSuggestion;
 };
 
+export function createSuggestionState(
+  values: FeatureRequestFormValues,
+  suggestion: DuplicateSuggestion,
+): CreateFeatureRequestState {
+  return {
+    values,
+    fieldErrors: {},
+    message: null,
+    suggestion: {
+      matchedRequestId: suggestion.matchedRequestId,
+      title: suggestion.title,
+      description: suggestion.description,
+      supportCount: suggestion.supportCount,
+      confidence: suggestion.confidence,
+      rationale: suggestion.rationale,
+    },
+  };
+}
+
 export type SupportFeatureRequestState = {
   message: string | null;
 };

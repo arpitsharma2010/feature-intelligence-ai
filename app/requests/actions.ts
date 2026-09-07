@@ -17,6 +17,7 @@ import {
 } from "@/lib/feature-requests";
 import {
   type CreateFeatureRequestState,
+  createSuggestionState,
   featureRequestSchema,
   type SupportFeatureRequestState,
 } from "@/lib/feature-request-validation";
@@ -108,12 +109,7 @@ export async function createFeatureRequestAction(
   }
 
   if (submission.status === "suggestion") {
-    return {
-      values: result.data,
-      fieldErrors: {},
-      message: null,
-      suggestion: submission.suggestion,
-    };
+    return createSuggestionState(result.data, submission.suggestion);
   }
 
   revalidatePath("/");
