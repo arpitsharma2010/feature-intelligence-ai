@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model FeatureRequest {
+  id             String   @id @default(cuid())
+  title          String
+  description    String
+  status         String   @default("NEW")
+  supportCount   Int      @default(0)
+
+  underlyingNeed String?
+  theme          String?
+  customerImpact Int?
+  strategicValue Int?
+  urgency        Int?
+  priorityScore  Float?
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
