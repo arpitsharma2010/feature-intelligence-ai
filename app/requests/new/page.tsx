@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { RequestForm } from "@/components/request-form";
+import { linkAccent, surfaceCard } from "@/lib/ui";
 
 export const metadata: Metadata = {
   title: "Submit a request | Feature Intelligence",
@@ -11,10 +12,7 @@ export const metadata: Metadata = {
 export default function NewRequestPage() {
   return (
     <main className="mx-auto w-full max-w-3xl px-5 py-12 sm:px-8 sm:py-16">
-      <Link
-        href="/"
-        className="text-sm font-semibold text-indigo-700 transition hover:text-indigo-900"
-      >
+      <Link href="/" className={linkAccent}>
         <span aria-hidden="true">←</span> Back to requests
       </Link>
 
@@ -31,7 +29,7 @@ export default function NewRequestPage() {
         </p>
       </div>
 
-      <div className="mt-9 rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+      <div className={`mt-9 p-6 sm:p-8 ${surfaceCard}`}>
         <RequestForm />
       </div>
     </main>

@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { listFeatureRequests } from "@/lib/feature-requests";
 import { formatDate, formatStatus } from "@/lib/format";
+import { buttonPrimary, linkAccent, surfaceCard } from "@/lib/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -9,7 +10,7 @@ export default async function Home() {
   const requests = await listFeatureRequests();
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-5 py-12 sm:px-8 sm:py-16">
+    <main className="mx-auto w-full max-w-5xl px-5 py-12 sm:px-8 sm:py-16">
       <section className="flex flex-col gap-6 border-b border-slate-200 pb-9 sm:flex-row sm:items-end sm:justify-between">
         <div className="max-w-2xl">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-indigo-700">
@@ -23,10 +24,7 @@ export default async function Home() {
             improvement of your own.
           </p>
         </div>
-        <Link
-          href="/requests/new"
-          className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
+        <Link href="/requests/new" className={`shrink-0 ${buttonPrimary}`}>
           Submit a request
         </Link>
       </section>
@@ -49,10 +47,7 @@ export default async function Home() {
             <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-600">
               Start the conversation by sharing the first product improvement.
             </p>
-            <Link
-              href="/requests/new"
-              className="mt-6 inline-flex min-h-11 items-center justify-center rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700"
-            >
+            <Link href="/requests/new" className={`mt-6 ${buttonPrimary}`}>
               Submit the first request
             </Link>
           </div>
@@ -61,7 +56,7 @@ export default async function Home() {
             {requests.map((request) => (
               <article
                 key={request.id}
-                className="group rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-indigo-200 hover:shadow-md sm:p-6"
+                className={`group p-5 transition hover:border-indigo-200 hover:shadow-md sm:p-6 ${surfaceCard}`}
               >
                 <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
                   <div className="min-w-0 flex-1">
@@ -84,7 +79,7 @@ export default async function Home() {
                         {request.title}
                       </Link>
                     </h3>
-                    <p className="request-summary mt-2 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base">
+                    <p className="mt-2 line-clamp-2 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base">
                       {request.description}
                     </p>
                   </div>
@@ -98,10 +93,7 @@ export default async function Home() {
                         {request.supportCount === 1 ? "supporter" : "supporters"}
                       </p>
                     </div>
-                    <Link
-                      href={`/requests/${request.id}`}
-                      className="text-sm font-semibold text-indigo-700 transition hover:text-indigo-900"
-                    >
+                    <Link href={`/requests/${request.id}`} className={linkAccent}>
                       View request <span aria-hidden="true">→</span>
                     </Link>
                   </div>

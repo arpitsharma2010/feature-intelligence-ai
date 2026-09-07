@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { SupportForm } from "@/components/support-form";
 import { getFeatureRequest } from "@/lib/feature-requests";
 import { formatDate, formatStatus } from "@/lib/format";
+import { linkAccent, surfaceCard } from "@/lib/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -38,15 +39,12 @@ export default async function RequestDetailPage({ params }: RequestDetailPagePro
 
   return (
     <main className="mx-auto w-full max-w-5xl px-5 py-12 sm:px-8 sm:py-16">
-      <Link
-        href="/"
-        className="text-sm font-semibold text-indigo-700 transition hover:text-indigo-900"
-      >
+      <Link href="/" className={linkAccent}>
         <span aria-hidden="true">←</span> Back to requests
       </Link>
 
       <div className="mt-7 grid gap-6 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
-        <article className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm sm:p-9">
+        <article className={`p-6 sm:p-9 ${surfaceCard}`}>
           <div className="flex flex-wrap items-center gap-3">
             <span className="rounded-full bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-indigo-700">
               {formatStatus(request.status)}
@@ -63,7 +61,7 @@ export default async function RequestDetailPage({ params }: RequestDetailPagePro
             {request.title}
           </h1>
           <div className="mt-7 border-t border-slate-100 pt-7">
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
+            <h2 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
               Description
             </h2>
             <p className="mt-3 whitespace-pre-wrap text-base leading-8 text-slate-700">
@@ -72,9 +70,11 @@ export default async function RequestDetailPage({ params }: RequestDetailPagePro
           </div>
         </article>
 
-        <aside className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-          <p className="text-sm font-medium text-slate-500">Community support</p>
-          <p className="mt-1 text-4xl font-bold tabular-nums text-slate-950">
+        <aside className={`p-6 ${surfaceCard}`}>
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Community support
+          </p>
+          <p className="mt-2 text-4xl font-bold tabular-nums text-slate-950">
             {request.supportCount}
           </p>
           <p className="mt-1 text-sm text-slate-600">

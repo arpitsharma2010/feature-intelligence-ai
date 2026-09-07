@@ -5,6 +5,7 @@ import { useFormStatus } from "react-dom";
 
 import { supportFeatureRequestAction } from "@/app/requests/actions";
 import type { SupportFeatureRequestState } from "@/lib/feature-request-validation";
+import { buttonPrimary } from "@/lib/ui";
 
 const initialState: SupportFeatureRequestState = { message: null };
 
@@ -12,11 +13,7 @@ function SupportButton() {
   const { pending } = useFormStatus();
 
   return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:cursor-not-allowed disabled:bg-indigo-400"
-    >
+    <button type="submit" disabled={pending} className={`${buttonPrimary} w-full`}>
       {pending ? "Adding support…" : "Support this request"}
     </button>
   );
