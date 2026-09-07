@@ -14,7 +14,7 @@
     "typecheck": "tsc --noEmit",
     "db:migrate": "prisma migrate dev",
     "db:seed": "prisma db seed",
-    "db:backfill-embeddings": "tsx scripts/backfill-embeddings.ts"
+    "db:backfill-embeddings": "tsx --env-file=.env scripts/backfill-embeddings.ts"
   },
   "prisma": {
     "seed": "node prisma/seed.mjs"
