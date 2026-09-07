@@ -1,0 +1,5 @@
+2026-09-07T00:30:08Z | Requested the initial Feature Intelligence System foundation using Next.js, TypeScript, Tailwind CSS, Prisma/PostgreSQL, and Zod with a protected feature-branch workflow. Inspected the empty repository and prepared a decision-complete implementation plan.
+2026-09-07T00:30:08Z | Adjusted the Git bootstrap to commit CLAUDE.md and prompts.txt on main, and changed AI rating fields to nullable integers while retaining a floating-point priority score. Updated the implementation plan accordingly.
+2026-09-07T00:30:08Z | Clarified that FeatureRequest requires id, title, and description fields. Confirmed those required fields in the planned schema.
+2026-09-07T00:30:08Z | Supplied the exact complete FeatureRequest Prisma model and approved the remaining plan. Reproduced the schema verbatim in the final implementation plan.
+2026-09-07T00:30:08Z | Requested implementation of the approved plan. Began implementation with prompt logging and the authorized main-branch bootstrap commit.
