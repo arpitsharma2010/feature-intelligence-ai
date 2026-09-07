@@ -1,6 +1,11 @@
 import { Prisma } from "@prisma/client";
 
 import { isValidEmbedding } from "@/lib/ai/embedding";
+import {
+  defaultFeatureRequestSort,
+  featureRequestOrderBy,
+  type FeatureRequestSort,
+} from "@/lib/feature-request-sort";
 import { prisma } from "@/lib/prisma";
 
 export type CreateFeatureRequestInput = {
@@ -8,9 +13,11 @@ export type CreateFeatureRequestInput = {
   description: string;
 };
 
-export async function listFeatureRequests() {
+export async function listFeatureRequests(
+  sort: FeatureRequestSort = defaultFeatureRequestSort,
+) {
   return prisma.featureRequest.findMany({
-    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    orderBy: featureRequestOrderBy[sort],
     select: {
       id: true,
       title: true,

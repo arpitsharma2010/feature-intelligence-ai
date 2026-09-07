@@ -1,13 +1,29 @@
 import Link from "next/link";
 
+import { normalizeFeatureRequestSort } from "@/lib/feature-request-sort";
 import { listFeatureRequests } from "@/lib/feature-requests";
 import { formatDate, formatStatus } from "@/lib/format";
-import { buttonPrimary, linkAccent, surfaceCard } from "@/lib/ui";
+import {
+  buttonPrimary,
+  buttonSecondary,
+  linkAccent,
+  surfaceCard,
+} from "@/lib/ui";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
-  const requests = await listFeatureRequests();
+const sortOptions = [
+  { value: "recent", label: "Most recent" },
+  { value: "supported", label: "Most supported" },
+] as const;
+
+type HomeProps = {
+  searchParams: Promise<{ sort?: string | string[] }>;
+};
+
+export default async function Home({ searchParams }: HomeProps) {
+  const sort = normalizeFeatureRequestSort((await searchParams).sort);
+  const requests = await listFeatureRequests(sort);
 
   return (
     <main className="mx-auto w-full max-w-5xl px-5 py-12 sm:px-8 sm:py-16">
@@ -30,13 +46,31 @@ export default async function Home() {
       </section>
 
       <section className="pt-9" aria-labelledby="request-list-heading">
-        <div className="mb-5 flex items-baseline justify-between gap-4">
-          <h2 id="request-list-heading" className="text-xl font-bold text-slate-950">
-            Recent requests
-          </h2>
-          <p className="text-sm text-slate-500">
-            {requests.length} {requests.length === 1 ? "request" : "requests"}
-          </p>
+        <div className="mb-5 flex flex-col gap-4 sm:flex-row sm:items-baseline sm:justify-between">
+          <div className="flex items-baseline gap-4">
+            <h2 id="request-list-heading" className="text-xl font-bold text-slate-950">
+              {sort === "supported" ? "Most supported requests" : "Recent requests"}
+            </h2>
+            <p className="text-sm text-slate-500">
+              {requests.length} {requests.length === 1 ? "request" : "requests"}
+            </p>
+          </div>
+          <nav aria-label="Sort requests" className="flex flex-wrap gap-2">
+            {sortOptions.map((option) => {
+              const isActive = option.value === sort;
+
+              return (
+                <Link
+                  key={option.value}
+                  href={`/?sort=${option.value}`}
+                  aria-current={isActive ? "page" : undefined}
+                  className={isActive ? buttonPrimary : buttonSecondary}
+                >
+                  {option.label}
+                </Link>
+              );
+            })}
+          </nav>
         </div>
 
         {requests.length === 0 ? (
