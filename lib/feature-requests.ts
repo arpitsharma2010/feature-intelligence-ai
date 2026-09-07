@@ -43,13 +43,18 @@ export async function getFeatureRequest(id: string) {
   });
 }
 
+// Submitting a request implies supporting it, so authors count as the first supporter.
+export function newFeatureRequestData(input: CreateFeatureRequestInput) {
+  return { ...input, supportCount: 1 };
+}
+
 export async function createFeatureRequest(
   input: CreateFeatureRequestInput,
   embedding?: number[] | null,
 ) {
   return prisma.$transaction(async (transaction) => {
     const request = await transaction.featureRequest.create({
-      data: input,
+      data: newFeatureRequestData(input),
       select: { id: true },
     });
 
