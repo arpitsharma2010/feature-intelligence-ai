@@ -39,7 +39,7 @@ export type DuplicateSuggestion = {
 
 export type TriageResult =
   | { status: "suggestion"; suggestion: DuplicateSuggestion }
-  | { status: "continue" }
+  | { status: "continue"; embedding?: number[] }
   | { status: "unavailable" };
 
 export type TriageDependencies = {
@@ -109,7 +109,12 @@ export function createDuplicateTriageGraph(dependencies: TriageDependencies) {
       );
 
       if (!classification || !candidate) {
-        return { result: { status: "continue" } as TriageResult };
+        return {
+          result: {
+            status: "continue",
+            embedding: state.embedding,
+          } as TriageResult,
+        };
       }
 
       return {
@@ -126,8 +131,11 @@ export function createDuplicateTriageGraph(dependencies: TriageDependencies) {
         } as TriageResult,
       };
     })
-    .addNode("continue_submission", () => ({
-      result: { status: "continue" } as TriageResult,
+    .addNode("continue_submission", (state) => ({
+      result: {
+        status: "continue",
+        embedding: state.embedding,
+      } as TriageResult,
     }))
     .addEdge(START, "generate_embedding")
     .addEdge("generate_embedding", "retrieve_candidates")

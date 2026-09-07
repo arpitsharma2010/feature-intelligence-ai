@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import type { DuplicateSuggestion } from "@/lib/ai/triage";
+
 export const featureRequestSchema = z.object({
   title: z
     .string()
@@ -22,6 +24,7 @@ export type CreateFeatureRequestState = {
   values: FeatureRequestFormValues;
   fieldErrors: Partial<Record<keyof FeatureRequestFormValues, string[]>>;
   message: string | null;
+  suggestion?: DuplicateSuggestion;
 };
 
 export type SupportFeatureRequestState = {

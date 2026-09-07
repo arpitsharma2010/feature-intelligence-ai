@@ -45,3 +45,19 @@ const graph = createDuplicateTriageGraph({
 export function triageFeatureRequest(draft: TriageDraft) {
   return runDuplicateTriage(graph, draft);
 }
+
+export async function enrichFeatureRequestEmbedding(draft: TriageDraft) {
+  try {
+    return await generateEmbedding(
+      getOpenAIClient(),
+      formatFeatureRequestInput(draft),
+      AI_TRIAGE_CONFIG.embeddingTimeoutMs,
+    );
+  } catch (error) {
+    console.warn(
+      "Feature request embedding enrichment is unavailable.",
+      error instanceof Error ? error.name : "UnknownError",
+    );
+    return null;
+  }
+}

@@ -1,3 +1,6 @@
+import { Prisma } from "@prisma/client";
+
+import { isValidEmbedding } from "@/lib/ai/embedding";
 import { prisma } from "@/lib/prisma";
 
 export type CreateFeatureRequestInput = {
@@ -33,10 +36,26 @@ export async function getFeatureRequest(id: string) {
   });
 }
 
-export async function createFeatureRequest(input: CreateFeatureRequestInput) {
-  return prisma.featureRequest.create({
-    data: input,
-    select: { id: true },
+export async function createFeatureRequest(
+  input: CreateFeatureRequestInput,
+  embedding?: number[] | null,
+) {
+  return prisma.$transaction(async (transaction) => {
+    const request = await transaction.featureRequest.create({
+      data: input,
+      select: { id: true },
+    });
+
+    if (isValidEmbedding(embedding)) {
+      const vector = `[${embedding.join(",")}]`;
+      await transaction.$executeRaw(
+        Prisma.sql`UPDATE "FeatureRequest"
+          SET "embedding" = ${vector}::vector
+          WHERE "id" = ${request.id}`,
+      );
+    }
+
+    return request;
   });
 }
 

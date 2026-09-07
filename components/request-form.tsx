@@ -26,6 +26,33 @@ function SubmitButton() {
   );
 }
 
+function DecisionButtons() {
+  const { pending } = useFormStatus();
+
+  return (
+    <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
+      <button
+        type="submit"
+        name="intent"
+        value="create-separately"
+        disabled={pending}
+        className="inline-flex min-h-11 items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-sm font-semibold text-slate-800 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:text-slate-400"
+      >
+        {pending ? "Working…" : "Create separately"}
+      </button>
+      <button
+        type="submit"
+        name="intent"
+        value="support-existing"
+        disabled={pending}
+        className="inline-flex min-h-11 items-center justify-center rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-indigo-400"
+      >
+        {pending ? "Working…" : "Support existing"}
+      </button>
+    </div>
+  );
+}
+
 export function RequestForm() {
   const [state, formAction] = useActionState(
     createFeatureRequestAction,
@@ -41,6 +68,27 @@ export function RequestForm() {
         >
           {state.message}
         </div>
+      ) : null}
+
+      {state.suggestion ? (
+        <section className="rounded-lg border border-indigo-200 bg-indigo-50 p-5">
+          <p className="text-sm font-semibold text-indigo-950">
+            This may already exist
+          </p>
+          <h2 className="mt-2 text-lg font-bold text-slate-950">
+            {state.suggestion.title}
+          </h2>
+          <p className="mt-2 text-sm leading-6 text-slate-700">
+            {state.suggestion.description}
+          </p>
+          <p className="mt-3 text-sm text-slate-600">
+            {state.suggestion.supportCount} supporters ·{" "}
+            {Math.round(state.suggestion.confidence * 100)}% match
+          </p>
+          <p className="mt-2 text-sm text-slate-700">
+            {state.suggestion.rationale}
+          </p>
+        </section>
       ) : null}
 
       <div>
@@ -98,9 +146,7 @@ export function RequestForm() {
         ) : null}
       </div>
 
-      <div className="flex justify-end">
-        <SubmitButton />
-      </div>
+      {state.suggestion ? <DecisionButtons /> : <div className="flex justify-end"><SubmitButton /></div>}
     </form>
   );
 }
